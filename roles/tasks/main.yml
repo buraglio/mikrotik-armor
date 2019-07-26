@@ -1,0 +1,36 @@
+---
+# tasks file for mikrotik-armor
+- name: disable services telnet, www, www-ssl, api, api-ssl, winbox
+  routeros_command:
+    commands:
+      - /ip service disable [find name=telnet]
+      - /ip service disable [find name=ftp]
+      - /ip service disable [find name=www]
+      - /ip service disable [find name=www-ssl]
+      - /ip service disable [find name=api]
+      - /ip service disable [find name=api-ssl]
+      - /ip service disable [find name=winbox]
+- name: disable bandwidth server
+  routeros_command:
+    commands:
+      - /tool bandwidth-server set enabled=no
+- name: disable remote DNS server
+  routeros_command:
+    commands:
+      - /ip dns set allow-remote-requests=no
+- name: disable socks
+  routeros_command:
+    commands:
+      - /ip socks set enabled=no
+- name: disable mac-winbx mac-ping (leaving mac-telnet enabled)
+  routeros_command: 
+    commands:
+      - /tool mac-server mac-winbox set [find] disabled=yes
+      - /tool mac-server ping set enabled=no
+- name: enable ssh strong-crypto
+  routeros_command:
+    commands:
+      - /ip ssh set strong-crypto=yes
+
+
+
